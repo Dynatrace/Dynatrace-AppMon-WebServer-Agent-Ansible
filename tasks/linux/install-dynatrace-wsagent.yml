@@ -1,0 +1,53 @@
+---
+- name: Unarchive the Dynatrace Web Server Agent installer to {{ dynatrace_wsagent_linux_install_dir }}
+  unarchive: src="{{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }}" dest="{{ dynatrace_wsagent_linux_install_dir }}"
+  sudo: yes
+
+- name: Stop and disable running Dynatrace Web Server Agent services
+  service: name={{ item }} state=stopped enabled=no
+  with_items: dynatrace_wsagent_linux_service_names
+  sudo: yes
+  ignore_errors: yes
+
+- name: Sleep for 5 seconds...
+  pause: seconds=5
+
+- name: Install the Dynatrace Web Server Agent to {{ dynatrace_wsagent_linux_install_dir }}
+  shell: /bin/sh dynatrace-wsagent*.sh chdir={{ dynatrace_wsagent_linux_install_dir }}
+  sudo: yes
+
+- name: Gather the name of the installation directory
+  shell: find . -maxdepth 1 -name dynatrace-\* -type d -printf '%T@ %p\n' | sort -k 1nr | cut -d' ' -f2 | head -1 chdir={{ dynatrace_wsagent_linux_install_dir }}
+  register: dynatrace_wsagent_installed_version_dir
+  sudo: yes
+
+- name: Change ownership of the installation directory
+  file: path={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} owner=dynatrace group=dynatrace state=directory recurse=yes
+  sudo: yes
+
+- name: Change mode of the installation directory
+  file: path={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} mode=0700
+  sudo: yes
+
+- name: Create a symlink of the actual installation directory to {{ dynatrace_wsagent_linux_install_dir }}/dynatrace
+  file: src={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} dest={{ dynatrace_wsagent_linux_install_dir }}/dynatrace owner=dynatrace group=dynatrace mode=0700 state=link
+  sudo: yes
+
+- name: Remove the Dynatrace Web Server Agent installer
+  shell: rm -rf {{ dynatrace_wsagent_linux_install_dir }}/dynatrace-wsagent-*.sh
+  sudo: yes
+
+- include: install-dynatrace-wsagent-initd-scripts.yml
+
+- name: Configure the name in the Dynatrace Web Server Agent's 'dtwsagent.ini' file
+  lineinfile: dest={{ dynatrace_wsagent_linux_install_dir }}/dynatrace/agent/conf/dtwsagent.ini regexp='^Name .*' line='Name {{ dynatrace_wsagent_name }}'
+  sudo: yes
+
+- name: Configure the Dynatrace Collector host in the Dynatrace Web Server Agent's 'dtwsagent.ini' file
+  lineinfile: dest={{ dynatrace_wsagent_linux_install_dir }}/dynatrace/agent/conf/dtwsagent.ini regexp='^Server .*' line='Server {{ dynatrace_wsagent_collector_host }}'
+  sudo: yes
+
+- name: Enable and start Dynatrace Web Server Agent services
+  service: name={{ item }} state=restarted sleep=5 enabled=yes
+  with_items: dynatrace_wsagent_linux_service_names
+  sudo: yes
