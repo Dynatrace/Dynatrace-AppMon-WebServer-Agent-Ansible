@@ -34,7 +34,7 @@
   sudo: yes
 
 - name: Remove the Dynatrace Web Server Agent installer
-  shell: rm -rf {{ dynatrace_wsagent_linux_install_dir }}/dynatrace-wsagent-*.sh
+  shell: rm -rf dynatrace-wsagent-*.sh dynatrace-wsagent-*.tar chdir={{ dynatrace_wsagent_linux_install_dir }}
   sudo: yes
 
 - include: install-dynatrace-wsagent-initd-scripts.yml
