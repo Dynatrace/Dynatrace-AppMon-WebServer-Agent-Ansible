@@ -2,6 +2,9 @@
 dynatrace_wsagent_linux_install_dir: /opt
 dynatrace_wsagent_linux_installer_file_name: dynatrace-wsagent.tar
 
+dynatrace_wsagent_collector_host: localhost
+dynatrace_wsagent_name: dtwsagent
+
 dynatrace_wsagent_role_name: Dynatrace-WebServer-Agent
 
 # Do not change anything below unless you know what you are doing!
