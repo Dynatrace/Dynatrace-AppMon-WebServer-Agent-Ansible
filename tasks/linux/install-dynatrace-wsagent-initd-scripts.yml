@@ -1,14 +1,4 @@
 ---
-- name: Assert that the Dynatrace Web Server Agent is executed as user 'dynatrace'
-  replace: dest="{{ dynatrace_wsagent_linux_install_dir }}/dynatrace/init.d/{{ item }}" regexp='^(\s+)(nohup \$DT_BINARY_WITH_PATH .*)' replace="\1su - dynatrace -c \"\2\""
-  with_items: dynatrace_wsagent_linux_service_names
-  sudo: yes
-
-- name: Assert that the Dynatrace Web Server Agent is executed as user 'dynatrace', pt.2
-  replace: dest="{{ dynatrace_wsagent_linux_install_dir }}/dynatrace/init.d/{{ item }}" regexp='^(\s+)(echo \$! .*)' replace="\1su - dynatrace -c \"\2\""
-  with_items: dynatrace_wsagent_linux_service_names
-  sudo: yes
-
 - name: Rewrite the Default-Start LSB directive in the Dynatrace Web Server Agent's init.d scripts so that services start at correct run levels
   replace: dest="{{ dynatrace_wsagent_linux_install_dir }}/dynatrace/init.d/{{ item }}" regexp='(\# Default-Start:).*' replace='\1 2 3 4 5'
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' # Assumes that runlevel 3 is "multi-user with networking"
@@ -18,6 +8,21 @@
 - name: Rewrite the Default-Stop comment in the Dynatrace Web Server Agent's init.d scripts so that services stop at correct run levels
   replace: dest="{{ dynatrace_wsagent_linux_install_dir }}/dynatrace/init.d/{{ item }}" regexp='(\# Default-Stop:).*' replace='\1 0 1 6'
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu' # Assumes that runlevel 3 is "multi-user with networking"
+  with_items: dynatrace_wsagent_linux_service_names
+  sudo: yes
+
+- name: Assert that DT_HOME in the Dynatrace Web Server Agent's init.d script points to {{ dynatrace_wsagent_linux_install_dir }}/dynatrace
+  replace: dest="{{ dynatrace_wsagent_linux_install_dir }}/dynatrace/init.d/{{ item }}" regexp='^DT_HOME=.*' replace="DT_HOME={{ dynatrace_wsagent_linux_install_dir }}/dynatrace"
+  with_items: dynatrace_wsagent_linux_service_names
+  sudo: yes
+
+- name: Assert that the Dynatrace Web Server Agent is executed as user 'dynatrace'
+  replace: dest="{{ dynatrace_wsagent_linux_install_dir }}/dynatrace/init.d/{{ item }}" regexp='^(\s+)(nohup \$DT_BINARY_WITH_PATH .*)' replace="\1su - dynatrace -c \"\2\""
+  with_items: dynatrace_wsagent_linux_service_names
+  sudo: yes
+
+- name: Assert that the Dynatrace Web Server Agent is executed as user 'dynatrace', pt.2
+  replace: dest="{{ dynatrace_wsagent_linux_install_dir }}/dynatrace/init.d/{{ item }}" regexp='^(\s+)(echo \$! .*)' replace="\1su - dynatrace -c \"\2\""
   with_items: dynatrace_wsagent_linux_service_names
   sudo: yes
 
