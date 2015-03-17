@@ -21,20 +21,20 @@ Download the Dynatrace Web Server Agent installer from [downloads.compuwareapm.c
 
 As defined in ```defaults/main.yml```:
 
-| Name                                          | Default | Description |
-|-----------------------------------------------|---------------------------|-------------|
-| *dynatrace_wsagent_linux_install_dir*         | /opt                      | The Dynatrace Web Server Agent will be installed into the directory *$dynatrace_wsagent_linux_install_dir*/dynatrace-*$major*-*$minor*-*$rev*, where *$major*, *$minor* and *$rev* are given by the installer. A symbolic link to the actual installation directory will be created in *$dynatrace_wsagent_linux_install_dir*/dynatrace. |
-| *dynatrace_wsagent_linux_installer_file_name* | dynatrace-wsagent.tar     | The file name of the Dynatrace Web Server Agent installer in the role's ```files``` directory. |
-| *dynatrace_wsagent_name*                      | dtwsagent                 | The name the Web Server Agent as it appears in Dynatrace. |
-| *dynatrace_wsagent_collector_hostname*        | localhost                 | The location of the Collector the Web Server Agent shall connect to. |
-| *dynatrace_wsagent_collector_port*            | 9998                      | The port on the Collector the Web Server Agent shall connect to. |
-| *dynatrace_wsagent_role_name*                 | Dynatrace-WebServer-Agent | The actual name of this role in an [Ansible Playbook's](http://docs.ansible.com/playbooks.html) ```roles``` directory. |
+| Name                                          | Default                             | Description |
+|-----------------------------------------------|-------------------------------------|-------------|
+| *dynatrace_wsagent_linux_install_dir*         | /opt                                | The Dynatrace Web Server Agent will be installed into the directory *$dynatrace_wsagent_linux_install_dir*/dynatrace-*$major*-*$minor*-*$rev*, where *$major*, *$minor* and *$rev* are given by the installer. A symbolic link to the actual installation directory will be created in *$dynatrace_wsagent_linux_install_dir*/dynatrace. |
+| *dynatrace_wsagent_linux_installer_file_name* | dynatrace-wsagent.tar               | The file name of the Dynatrace Web Server Agent installer in the role's ```files``` directory. |
+| *dynatrace_wsagent_name*                      | dtwsagent                           | The name the Web Server Agent as it appears in Dynatrace. |
+| *dynatrace_wsagent_collector_hostname*        | localhost                           | The location of the Collector the Web Server Agent shall connect to. |
+| *dynatrace_wsagent_collector_port*            | 9998                                | The port on the Collector the Web Server Agent shall connect to. |
+| *dynatrace_wsagent_role_name*                 | dynatrace.Dynatrace-WebServer-Agent | The actual name of this role in an [Ansible Playbook's](http://docs.ansible.com/playbooks.html) ```roles``` directory. |
 
 ## Example Playbook
 
 	- hosts: all
 	  roles:
-	    - { role: Dynatrace-WebServer-Agent }
+	    - role: Dynatrace-WebServer-Agent
 
 ## Additional Resources
 
