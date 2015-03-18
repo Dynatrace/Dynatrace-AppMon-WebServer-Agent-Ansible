@@ -34,7 +34,7 @@ As defined in ```defaults/main.yml```:
 
 	- hosts: all
 	  roles:
-	    - role: Dynatrace-WebServer-Agent
+	    - role: dynatrace.Dynatrace-WebServer-Agent
 
 ## Additional Resources
 
