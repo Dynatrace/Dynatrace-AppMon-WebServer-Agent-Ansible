@@ -1,0 +1,5 @@
+---
+- hosts: test-kitchen
+  roles:
+  - role: dynatrace.Dynatrace-WebServer-Agent
+    dynatrace_wsagent_linux_installer_file_url: http://10.0.2.2/dynatrace/dynatrace-wsagent.tar
