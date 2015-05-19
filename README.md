@@ -21,14 +21,15 @@ Download the Dynatrace Web Server Agent installer from [downloads.compuwareapm.c
 
 As defined in ```defaults/main.yml```:
 
-| Name                                          | Default                             | Description |
-|-----------------------------------------------|-------------------------------------|-------------|
-| *dynatrace_wsagent_linux_install_dir*         | /opt                                | The Dynatrace Web Server Agent will be installed into the directory *$dynatrace_wsagent_linux_install_dir*/dynatrace-*$major*-*$minor*-*$rev*, where *$major*, *$minor* and *$rev* are given by the installer. A symbolic link to the actual installation directory will be created in *$dynatrace_wsagent_linux_install_dir*/dynatrace. |
-| *dynatrace_wsagent_linux_installer_file_name* | dynatrace-wsagent.tar               | The file name of the Dynatrace Web Server Agent installer in the role's ```files``` directory. |
-| *dynatrace_wsagent_name*                      | dtwsagent                           | The name the Web Server Agent as it appears in Dynatrace. |
-| *dynatrace_wsagent_collector_hostname*        | localhost                           | The location of the Collector the Web Server Agent shall connect to. |
-| *dynatrace_wsagent_collector_port*            | 9998                                | The port on the Collector the Web Server Agent shall connect to. |
-| *dynatrace_wsagent_role_name*                 | dynatrace.Dynatrace-WebServer-Agent | The actual name of this role in an [Ansible Playbook's](http://docs.ansible.com/playbooks.html) ```roles``` directory. |
+| Name                                          | Default                                          | Description |
+|-----------------------------------------------|--------------------------------------------------|-------------|
+| *dynatrace_wsagent_linux_install_dir*         | /opt                                             | The Dynatrace Web Server Agent will be installed into the directory *$dynatrace_wsagent_linux_install_dir*/dynatrace-*$major*-*$minor*-*$rev*, where *$major*, *$minor* and *$rev* are given by the installer. A symbolic link to the actual installation directory will be created in *$dynatrace_wsagent_linux_install_dir*/dynatrace. |
+| *dynatrace_wsagent_linux_installer_file_name* | dynatrace-wsagent.tar                            | The file name of the Dynatrace Web Server Agent installer in the role's ```files``` directory. |
+| *dynatrace_wsagent_linux_installer_file_url*  | http://localhost/dynatrace/dynatrace-wsagent.tar | A HTTP, HTTPS or FTP URL to the Dynatrace Web Server Agent installer in the form (http\|https\|ftp)://[user[:pass]]@host.domain[:port]/path. |
+| *dynatrace_wsagent_name*                      | dtwsagent                                        | The name the Web Server Agent as it appears in Dynatrace. |
+| *dynatrace_wsagent_collector_hostname*        | localhost                                        | The location of the Collector the Web Server Agent shall connect to. |
+| *dynatrace_wsagent_collector_port*            | 9998                                             | The port on the Collector the Web Server Agent shall connect to. |
+| *dynatrace_wsagent_role_name*                 | dynatrace.Dynatrace-WebServer-Agent              | The actual name of this role in an [Ansible Playbook's](http://docs.ansible.com/playbooks.html) ```roles``` directory. |
 
 ## Example Playbook
 
@@ -38,9 +39,12 @@ As defined in ```defaults/main.yml```:
 
 ## Additional Resources
 
+- [Blog: How to Automate Enterprise Application Monitoring with Ansible](http://apmblog.dynatrace.com/2015/03/04/how-to-automate-enterprise-application-monitoring-with-ansible/)
+- [Blog: How to Automate Enterprise Application Monitoring with Ansible - Part II](http://apmblog.dynatrace.com/2015/04/23/how-to-automate-enterprise-application-monitoring-with-ansible-part-ii/)
 - [Slide Deck: Automated Deployments](http://slideshare.net/MartinEtmajer/automated-deployments-slide-share)
-- [Slide Deck: Introduction to Automated Deployments with Ansible](http://www.slideshare.net/MartinEtmajer/introduction-to-automated-deployments-with-ansible)
-- [Tutorials: Automated Deployments with Dynatrace and Ansible](https://community.compuwareapm.com/community/display/COE/Tutorials+on+Automated+Deployments#TutorialsonAutomatedDeployments-ansible)
+- [Slide Deck: Automated Deployments (of Dynatrace) with Ansible](http://www.slideshare.net/MartinEtmajer/automated-deployments-with-ansible)
+- [Slide Deck: Testing Ansible Roles with Test Kitchen, Serverspec and RSpec](http://www.slideshare.net/MartinEtmajer/testing-ansible-roles-with-test-kitchen-serverspec-and-rspec-48185017)
+- [Tutorials: Automated Deployments (of Dynatrace) with Ansible](https://community.compuwareapm.com/community/display/COE/Tutorials+on+Automated+Deployments#TutorialsonAutomatedDeployments-ansible)
 
 ## Questions?
 
