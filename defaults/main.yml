@@ -7,6 +7,9 @@ dynatrace_wsagent_name: dtwsagent
 dynatrace_wsagent_collector_hostname: localhost
 dynatrace_wsagent_collector_port: 9998
 
+dynatrace_wsagent_user: dynatrace
+dynatrace_wsagent_group: dynatrace
+
 dynatrace_wsagent_role_name: dynatrace.Dynatrace-WebServer-Agent
 
 # Do not change anything below unless you know what you are doing!
