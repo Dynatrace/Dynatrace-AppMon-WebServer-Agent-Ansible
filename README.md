@@ -27,7 +27,7 @@ As defined in ```defaults/main.yml```:
 | *dynatrace_wsagent_name*                      | dtwsagent                                        | The name the Web Server Agent as it appears in Dynatrace. |
 | *dynatrace_wsagent_collector_hostname*        | localhost                                        | The location of the Collector the Web Server Agent shall connect to. |
 | *dynatrace_wsagent_collector_port*            | 9998                                             | The port on the Collector the Web Server Agent shall connect to. |
-| *dynatrace_wsagent_role_name*                 | dynatrace.Dynatrace-WebServer-Agent              | The actual name of this role in an [Ansible Playbook's](http://docs.ansible.com/playbooks.html) ```roles``` directory. |
+| *dynatrace_wsagent_role_name*                 | Dynatrace.Dynatrace-WebServer-Agent              | The actual name of this role in an [Ansible Playbook's](http://docs.ansible.com/playbooks.html) ```roles``` directory. |
 | *dynatrace_wsagent_user*                      | dynatrace                                        | The actual name of user the agent install directory is owned by as well as the user it runs as. |
 | *dynatrace_wsagent_group*                     | dynatrace                                        | The default group the user belongs to. |
 
@@ -36,7 +36,7 @@ As defined in ```defaults/main.yml```:
 ```
 - hosts: all
   roles:
-    - role: dynatrace.Dynatrace-WebServer-Agent
+    - role: Dynatrace.Dynatrace-WebServer-Agent
 ```
 
 ## Testing
