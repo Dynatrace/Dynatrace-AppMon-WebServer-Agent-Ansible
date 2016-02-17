@@ -8,7 +8,7 @@ This Ansible role installs and configures the Dynatrace WebServer Agent of the [
 
 The role is available via:
 
-- [Ansible Galaxy](https://galaxy.ansible.com/list#/roles/5324)
+- [Ansible Galaxy](https://galaxy.ansible.com/Dynatrace/Dynatrace-WebServer-Agent)
 - [GitHub](https://github.com/Dynatrace/Dynatrace-WebServer-Agent-Ansible)
 
 ## Requirements
