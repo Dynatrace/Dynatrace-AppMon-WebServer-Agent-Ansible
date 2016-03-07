@@ -14,9 +14,8 @@
   sudo: yes
 
 - name: Stop and disable running Dynatrace Web Server Agent services
-  service: name={{ item }} state=stopped enabled=no
-  with_items: dynatrace_wsagent_linux_service_names
   sudo: yes
+  service: name=dynaTraceWebServerAgent state=stopped enabled=no
   ignore_errors: yes
 
 - name: Sleep for 5 seconds...
@@ -73,6 +72,5 @@
   sudo: yes
 
 - name: Enable and start Dynatrace Web Server Agent services
-  service: name={{ item }} state=restarted sleep=5 enabled=yes
-  with_items: dynatrace_wsagent_linux_service_names
   sudo: yes
+  service: name=dynaTraceWebServerAgent state=restarted sleep=5 enabled=yes
