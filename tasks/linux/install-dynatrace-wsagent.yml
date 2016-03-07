@@ -5,7 +5,7 @@
   become: yes
 
 - name: Change ownership of the installation directory if it had to be created
-  file: path="{{ dynatrace_wsagent_linux_install_dir }}" owner={{ dynatrace_wsagent_group }} group={{ dynatrace_wsagent_group }}
+  file: path="{{ dynatrace_wsagent_linux_install_dir }}" owner={{ dynatrace_wsagent_owner }} group={{ dynatrace_wsagent_group }}
   when: dynatrace_wsagent_create_install_dir_result|changed
   become: yes
 
@@ -31,7 +31,7 @@
   become: yes
 
 - name: Change ownership of the installation directory
-  file: path={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} owner={{ dynatrace_wsagent_user }} group={{ dynatrace_wsagent_group }} state=directory recurse=yes
+  file: path={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} owner={{ dynatrace_wsagent_owner }} group={{ dynatrace_wsagent_group }} state=directory recurse=yes
   become: yes
 
 - name: Change mode of the installation directory
@@ -39,7 +39,7 @@
   become: yes
 
 - name: Create a symlink of the actual installation directory to {{ dynatrace_wsagent_linux_install_dir }}/dynatrace
-  file: src={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} dest={{ dynatrace_wsagent_linux_install_dir }}/dynatrace owner={{ dynatrace_wsagent_user }} group={{ dynatrace_wsagent_group }} mode=0755 state=link
+  file: src={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} dest={{ dynatrace_wsagent_linux_install_dir }}/dynatrace owner={{ dynatrace_wsagent_owner }} group={{ dynatrace_wsagent_group }} mode=0755 state=link
   become: yes
 
 - name: Remove the Dynatrace Web Server Agent installer
