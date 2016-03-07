@@ -47,7 +47,8 @@
 
 - name: Change ownership of the installation directory
   file:
-    path: "{{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} owner={{ dynatrace_wsagent_owner }}"
+    path: "{{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }}"
+    owner: "{{ dynatrace_wsagent_owner }}"
     group: "{{ dynatrace_wsagent_group }}"
     state: directory
     recurse: yes
@@ -62,7 +63,8 @@
 - name: "Create a symlink of the actual installation directory to {{ dynatrace_wsagent_linux_install_dir }}/dynatrace"
   file:
     src: "{{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }}"
-    dest: "{{ dynatrace_wsagent_linux_install_dir }}/dynatrace owner={{ dynatrace_wsagent_owner }}"
+    dest: "{{ dynatrace_wsagent_linux_install_dir }}/dynatrace"
+    owner: "{{ dynatrace_wsagent_owner }}"
     group: "{{ dynatrace_wsagent_group }}"
     mode: 0755
     state: link
