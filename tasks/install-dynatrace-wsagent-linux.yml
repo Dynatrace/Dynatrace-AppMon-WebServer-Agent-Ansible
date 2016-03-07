@@ -1,16 +1,23 @@
 ---
 - name: Check if the Dynatrace Web Server Agent installer is provided locally
-  local_action: stat path="{{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }}"
+  local_action:
+    module: stat
+    path: "{{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }}"
   register: dynatrace_wsagent_installer_file_provided
 
 - name: Check if the Dynatrace Web Server Agent installer is provided by URL
-  local_action: get_url url="{{ dynatrace_wsagent_linux_installer_file_url }}" dest="{{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }}" force=yes
-  when: not dynatrace_wsagent_installer_file_provided.stat.exists
+  local_action:
+    module: get_url
+    url: "{{ dynatrace_wsagent_linux_installer_file_url }}"
+    dest: "{{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }}"
+    force: yes
   register: dynatrace_wsagent_installer_url_provided
   ignore_errors: true
+  when: not dynatrace_wsagent_installer_file_provided.stat.exists
 
 - name: Fail if the Dynatrace Web Server Agent installer is not provided
-  fail: msg="The Dynatrace Web Server Agent installer is not provided at {{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }} and could not be downloaded from {{ dynatrace_wsagent_linux_installer_file_url }}."
+  fail:
+    msg: "The Dynatrace Web Server Agent installer is not provided at {{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }} and could not be downloaded from {{ dynatrace_wsagent_linux_installer_file_url }}."
   when: (not dynatrace_wsagent_installer_file_provided.stat.exists) and (dynatrace_wsagent_installer_url_provided.failed is defined and dynatrace_wsagent_installer_url_provided.failed)
 
 - include: linux/install-dynatrace-user.yml

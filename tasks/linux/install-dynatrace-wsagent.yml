@@ -1,49 +1,77 @@
 ---
-- name: Create the installation directory {{ dynatrace_wsagent_linux_install_dir }}
-  file: path="{{ dynatrace_wsagent_linux_install_dir }}" state=directory
+- name: "Create the installation directory {{ dynatrace_wsagent_linux_install_dir }}"
+  file:
+    path: "{{ dynatrace_wsagent_linux_install_dir }}"
+    state: directory
   register: dynatrace_wsagent_create_install_dir_result
   become: yes
 
 - name: Change ownership of the installation directory if it had to be created
-  file: path="{{ dynatrace_wsagent_linux_install_dir }}" owner={{ dynatrace_wsagent_owner }} group={{ dynatrace_wsagent_group }}
-  when: dynatrace_wsagent_create_install_dir_result|changed
+  file:
+    path: "{{ dynatrace_wsagent_linux_install_dir }}"
+    owner: "{{ dynatrace_wsagent_owner }}"
+    group: "{{ dynatrace_wsagent_group }}"
+  when: dynatrace_wsagent_create_install_dir_result | changed
   become: yes
 
-- name: Unarchive the Dynatrace Web Server Agent installer to {{ dynatrace_wsagent_linux_install_dir }}
-  unarchive: src="{{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }}" dest="{{ dynatrace_wsagent_linux_install_dir }}"
+- name: "Unarchive the Dynatrace Web Server Agent installer to {{ dynatrace_wsagent_linux_install_dir }}"
+  unarchive:
+    src: "{{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }}"
+    dest: "{{ dynatrace_wsagent_linux_install_dir }}"
   become: yes
 
 - name: Stop and disable running Dynatrace Web Server Agent services
-  service: name=dynaTraceWebServerAgent state=stopped enabled=no
-  become: yes
+  service:
+    name: dynaTraceWebServerAgent
+    state: stopped
+    enabled: no
   ignore_errors: yes
+  become: yes
 
 - name: Sleep for 5 seconds...
-  pause: seconds=5
+  pause:
+    seconds: 5
 
-- name: Install the Dynatrace Web Server Agent to {{ dynatrace_wsagent_linux_install_dir }}
-  shell: /bin/sh dynatrace-wsagent*.sh chdir={{ dynatrace_wsagent_linux_install_dir }}
+- name: "Install the Dynatrace Web Server Agent to {{ dynatrace_wsagent_linux_install_dir }}"
+  shell: /bin/sh dynatrace-wsagent*.sh
+  args:
+    chdir: "{{ dynatrace_wsagent_linux_install_dir }}"
   become: yes
 
 - name: Gather the name of the installation directory
-  shell: find . -maxdepth 1 -name dynatrace-\* -type d -printf '%T@ %p\n' | sort -k 1nr | cut -d' ' -f2 | head -1 chdir={{ dynatrace_wsagent_linux_install_dir }}
+  shell: find . -maxdepth 1 -name dynatrace-\* -type d -printf '%T@ %p\n' | sort -k 1nr | cut -d' ' -f2 | head -1
+  args:
+    chdir: "{{ dynatrace_wsagent_linux_install_dir }}"
   register: dynatrace_wsagent_installed_version_dir
   become: yes
 
 - name: Change ownership of the installation directory
-  file: path={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} owner={{ dynatrace_wsagent_owner }} group={{ dynatrace_wsagent_group }} state=directory recurse=yes
+  file:
+    path: "{{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} owner={{ dynatrace_wsagent_owner }}"
+    group: "{{ dynatrace_wsagent_group }}"
+    state: directory
+    recurse: yes
   become: yes
 
 - name: Change mode of the installation directory
-  file: path={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} mode=0755
+  file:
+    path: "{{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }}"
+    mode: 0755
   become: yes
 
-- name: Create a symlink of the actual installation directory to {{ dynatrace_wsagent_linux_install_dir }}/dynatrace
-  file: src={{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }} dest={{ dynatrace_wsagent_linux_install_dir }}/dynatrace owner={{ dynatrace_wsagent_owner }} group={{ dynatrace_wsagent_group }} mode=0755 state=link
+- name: "Create a symlink of the actual installation directory to {{ dynatrace_wsagent_linux_install_dir }}/dynatrace"
+  file:
+    src: "{{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_installed_version_dir.stdout }}"
+    dest: "{{ dynatrace_wsagent_linux_install_dir }}/dynatrace owner={{ dynatrace_wsagent_owner }}"
+    group: "{{ dynatrace_wsagent_group }}"
+    mode: 0755
+    state: link
   become: yes
 
 - name: Remove the Dynatrace Web Server Agent installer
-  shell: rm -rf dynatrace-wsagent-*.sh dynatrace-wsagent-*.tar chdir={{ dynatrace_wsagent_linux_install_dir }}
+  shell: rm -rf dynatrace-wsagent-*.sh dynatrace-wsagent-*.tar
+  args:
+    chdir: "{{ dynatrace_wsagent_linux_install_dir }}"
   become: yes
 
 - name: Compute the Dynatrace Web Server Agent's start runlevels for Ubuntu and Debian based distros
@@ -58,19 +86,33 @@
     linux_service_stop_runlevels="0 1 2 6"
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
 
-- name: Make the '{{ item }}' init script available in /etc/init.d
-  template: src=templates/linux/init.d/{{ item }}.j2 dest=/etc/init.d/{{ item }} owner=root group=root mode=0755
-  with_items: dynatrace_wsagent_linux_service_names
+- name: Make the 'dynaTraceWebServerAgent' init script available in /etc/init.d
+  template:
+    src: templates/linux/init.d/dynaTraceWebServerAgent.j2
+    dest: /etc/init.d/dynaTraceWebServerAgent
+    owner: root
+    group: root
+    mode: 0755
   become: yes
 
 - name: Configure the name in the Dynatrace Web Server Agent's 'dtwsagent.ini' file
-  lineinfile: dest={{ dynatrace_wsagent_linux_install_dir }}/dynatrace/agent/conf/dtwsagent.ini regexp='^Name .*' line='Name {{ dynatrace_wsagent_name }}'
+  lineinfile:
+    dest: "{{ dynatrace_wsagent_linux_install_dir }}/dynatrace/agent/conf/dtwsagent.ini"
+    regexp: '^Name .*'
+    line: "Name {{ dynatrace_wsagent_name }}"
   become: yes
 
 - name: Configure the Dynatrace Collector host in the Dynatrace Web Server Agent's 'dtwsagent.ini' file
-  lineinfile: dest={{ dynatrace_wsagent_linux_install_dir }}/dynatrace/agent/conf/dtwsagent.ini regexp='^Server .*' line='Server {{ dynatrace_wsagent_collector_hostname }}:{{ dynatrace_wsagent_collector_port }}'
+  lineinfile:
+    dest: "{{ dynatrace_wsagent_linux_install_dir }}/dynatrace/agent/conf/dtwsagent.ini"
+    regexp: '^Server .*'
+    line: "Server {{ dynatrace_wsagent_collector_hostname }}:{{ dynatrace_wsagent_collector_port }}"
   become: yes
 
 - name: Enable and start Dynatrace Web Server Agent services
-  service: name=dynaTraceWebServerAgent state=restarted sleep=5 enabled=yes
+  service:
+    name: dynaTraceWebServerAgent
+    state: restarted
+    sleep: 5
+    enabled: yes
   become: yes

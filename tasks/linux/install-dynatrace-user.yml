@@ -1,4 +1,6 @@
 ---
-- name: Install system user "{{ dynatrace_wsagent_owner }}"
-  user: name={{ dynatrace_wsagent_owner }} comment='Dynatrace user' system=yes
+- name: "Install system user '{{ dynatrace_wsagent_owner }}'"
+  user:
+    name: "{{ dynatrace_wsagent_owner }}"
+    system: yes
   become: yes
