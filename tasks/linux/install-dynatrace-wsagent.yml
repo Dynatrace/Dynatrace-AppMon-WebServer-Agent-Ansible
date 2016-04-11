@@ -14,10 +14,25 @@
   when: dynatrace_wsagent_create_install_dir_result | changed
   become: yes
 
-- name: "Unarchive the Dynatrace Web Server Agent installer to {{ dynatrace_wsagent_linux_install_dir }}"
-  unarchive:
+- name: "Copy the Dynatrace installer to {{ dynatrace_wsagent_linux_install_dir }} if the installer is provided locally"
+  copy:
     src: "{{ playbook_dir }}/roles/{{ dynatrace_wsagent_role_name }}/files/linux/{{ dynatrace_wsagent_linux_installer_file_name }}"
     dest: "{{ dynatrace_wsagent_linux_install_dir }}"
+  when: dynatrace_wsagent_installer_file_provided.stat.exists
+  become: yes
+
+- name: "Download the Dynatrace installer to {{ dynatrace_wsagent_linux_install_dir }} if the installer is not provided locally"
+  get_url:
+    url: "{{ dynatrace_wsagent_linux_installer_file_url }}"
+    dest: "{{ dynatrace_wsagent_linux_install_dir }}"
+  when: not dynatrace_wsagent_installer_file_provided.stat.exists
+  become: yes
+
+- name: "Unarchive the Dynatrace Web Server Agent installer to {{ dynatrace_wsagent_linux_install_dir }}"
+  unarchive:
+    src: "{{ dynatrace_wsagent_linux_install_dir }}/{{ dynatrace_wsagent_linux_installer_file_name }}"
+    dest: "{{ dynatrace_wsagent_linux_install_dir }}"
+    copy: no
   become: yes
 
 - name: Stop and disable running Dynatrace Web Server Agent services
