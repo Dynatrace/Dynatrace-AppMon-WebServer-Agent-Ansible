@@ -1,7 +1,7 @@
 ---
 dynatrace_wsagent_linux_install_dir: /opt
-dynatrace_wsagent_linux_installer_file_name: dynatrace-wsagent-7.0.0.2449-linux-x86-64.tar
-dynatrace_wsagent_linux_installer_file_url: "https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2449/{{ dynatrace_wsagent_linux_installer_file_name }}"
+dynatrace_wsagent_linux_installer_file_name: dynatrace-wsagent-7.0.0.2469-linux-x86-64.tar
+dynatrace_wsagent_linux_installer_file_url: "https://downloads.dynatrace.com/clientservices/agent?version=7.0.0.2469&os=linux&arch=x64&techtype=webserver"
 
 dynatrace_wsagent_name: dtwsagent
 dynatrace_wsagent_collector_hostname: localhost
