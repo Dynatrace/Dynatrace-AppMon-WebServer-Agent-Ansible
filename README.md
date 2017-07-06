@@ -1,8 +1,8 @@
 # Dynatrace-WebServer-Agent-Ansible
 
-This Ansible role installs and configures the Dynatrace WebServer Agent of the [Dynatrace Application Monitoring](http://www.dynatrace.com/en/products/application-monitoring.html) solution.
+This Ansible role installs and configures the Dynatrace AppMon WebServer Agent of the [Dynatrace AppMon](https://www.dynatrace.com/support/doc/appmon/) solution.
 
-**Note**: this role merely makes the Dynatrace WebServer Agent available, but it does not configure your web server to actually load it. See the [Dynatrace-Apache-HTTPServer-Agent-Ansible](https://github.com/dynaTrace/Dynatrace-Apache-HTTPServer-Agent-Ansible) role for an example that does.
+**Note**: this role merely makes the Dynatrace AppMon WebServer Agent available, but it does not configure your web server to actually load it. See the [Dynatrace-Apache-HTTPServer-Agent-Ansible](https://github.com/dynaTrace/Dynatrace-Apache-HTTPServer-Agent-Ansible) role for an example that does.
 
 ## Download
 
@@ -13,7 +13,7 @@ The role is available via:
 
 ## Requirements
 
-This role downloads and installs the most recent version of the Dynatrace Web Server Agent from [http://downloads.dynatracesaas.com](http://downloads.dynatracesaas.com). Alternatively, you can place the installer artifact as `dynatrace-wsagent-linux-x64.tar` in the role's `files` directory from where it will be picked up during the installation. The default file name and URL can be overridden via the `dynatrace_wsagent_linux_installer_file_name` and `dynatrace_wsagent_linux_installer_file_url` attributes, respectively. Please refer to `defaults/main.yml` for a list of supported attributes.
+This role downloads and installs the most recent version of the Dynatrace AppMon Web Server Agent from [http://downloads.dynatracesaas.com](http://downloads.dynatracesaas.com). Alternatively, you can place the installer artifact as `dynatrace-wsagent-linux-x64.tar` in the role's `files` directory from where it will be picked up during the installation. The default file name and URL can be overridden via the `dynatrace_wsagent_linux_installer_file_name` and `dynatrace_wsagent_linux_installer_file_url` attributes, respectively. Please refer to `defaults/main.yml` for a list of supported attributes.
 
 ## Role Variables
 
@@ -21,14 +21,14 @@ As defined in ```defaults/main.yml```:
 
 | Name                                          | Default                                                                | Description |
 |-----------------------------------------------|------------------------------------------------------------------------|-------------|
-| *dynatrace_wsagent_linux_install_dir*         | /opt                                                                   | The Dynatrace Web Server Agent will be installed into the directory *$dynatrace_wsagent_linux_install_dir*/dynatrace-*$major*-*$minor*-*$rev*, where *$major*, *$minor* and *$rev* are given by the installer. A symbolic link to the actual installation directory will be created in *$dynatrace_wsagent_linux_install_dir*/dynatrace. |
-| *dynatrace_wsagent_linux_installer_file_name* | dynatrace-wsagent-7.0.0.2449-linux-x86-64.tar                          | The file name of the Dynatrace Web Server Agent installer in the role's ```files``` directory. |
-| *dynatrace_wsagent_linux_installer_file_url*  | https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2449/dynatrace-wsagent-7.0.0.2449-linux-x86-64.tar | A HTTP, HTTPS or FTP URL to the Dynatrace Web Server Agent installer in the form (http\|https\|ftp)://[user[:pass]]@host.domain[:port]/path. |
-| *dynatrace_wsagent_name*                      | dtwsagent                                                              | The name the Web Server Agent as it appears in Dynatrace. |
+| *dynatrace_wsagent_linux_install_dir*         | /opt                                                                   | The Dynatrace AppMon Web Server Agent will be installed into the directory *$dynatrace_wsagent_linux_install_dir*/dynatrace-*$major*-*$minor*-*$rev*, where *$major*, *$minor* and *$rev* are given by the installer. A symbolic link to the actual installation directory will be created in *$dynatrace_wsagent_linux_install_dir*/dynatrace. |
+| *dynatrace_wsagent_linux_installer_file_name* | dynatrace-wsagent-7.0.0.2449-linux-x86-64.tar                          | The file name of the Dynatrace AppMon Web Server Agent installer in the role's ```files``` directory. |
+| *dynatrace_wsagent_linux_installer_file_url*  | https://files.dynatrace.com/downloads/OnPrem/dynaTrace/7.0/7.0.0.2449/dynatrace-wsagent-7.0.0.2449-linux-x86-64.tar | A HTTP, HTTPS or FTP URL to the Dynatrace AppMon Web Server Agent installer in the form (http\|https\|ftp)://[user[:pass]]@host.domain[:port]/path. |
+| *dynatrace_wsagent_name*                      | dtwsagent                                                              | The name the Web Server Agent as it appears in Dynatrace AppMon. |
 | *dynatrace_wsagent_collector_hostname*        | localhost                                                              | The location of the Collector the Web Server Agent shall connect to. |
 | *dynatrace_wsagent_collector_port*            | 9998                                                                   | The port on the Collector the Web Server Agent shall connect to. |
-| *dynatrace_wsagent_owner*                     | dynatrace                                                              | The system user that owns the Dynatrace installation.
-| *dynatrace_wsagent_group*                     | dynatrace                                                              | The system user's group that owns the Dynatrace installation.
+| *dynatrace_wsagent_owner*                     | dynatrace                                                              | The system user that owns the Dynatrace AppMon installation.
+| *dynatrace_wsagent_group*                     | dynatrace                                                              | The system user's group that owns the Dynatrace AppMon installation.
 | *dynatrace_wsagent_role_name*                 | Dynatrace.Dynatrace-WebServer-Agent                                    | The actual name of this role in an [Ansible Playbook's](http://docs.ansible.com/playbooks.html) ```roles``` directory. |
 
 ## Example Playbook
@@ -67,7 +67,7 @@ By default, we run our tests inside [Docker](https://www.docker.com/) containers
 
 ### Presentations
 
-- [Automated Deployments (of Dynatrace) with Ansible](http://www.slideshare.net/MartinEtmajer/automated-deployments-with-ansible)
+- [Automated Deployments (of Dynatrace AppMon) with Ansible](http://www.slideshare.net/MartinEtmajer/automated-deployments-with-ansible)
 - [Test-Driven Infrastructure with Ansible, Test Kitchen, Serverspec and RSpec](http://www.slideshare.net/MartinEtmajer/testing-ansible-roles-with-test-kitchen-serverspec-and-rspec-48185017)
 
 ## Problems? Questions? Suggestions?
